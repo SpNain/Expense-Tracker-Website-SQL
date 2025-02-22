@@ -1,13 +1,9 @@
-// Global variables to hold the last fetched report data and its type.
 let currentReportData = [];
 let currentReportType = "";
 
-/* ---- DAILY REPORT CODE---- */
 
-// Daily Report function
 async function getDailyReport(e) {
 
-  // Get inputs, table body and table footers for daily report
   const dateInput = document.getElementById("date");
   const tbodyDaily = document.getElementById("tbodyDailyId");
   const tfootDaily = document.getElementById("tfootDailyId");
@@ -29,7 +25,6 @@ async function getDailyReport(e) {
       { headers: { Authorization: token } }
     );
 
-    // Save the data and report type globally for CSV download
     currentReportData = response.data;
     currentReportType = "daily";
 
@@ -68,10 +63,8 @@ async function getDailyReport(e) {
   }
 }
 
-// Add event listener for showing daily report
 document.getElementById("dailyForm").addEventListener("submit", getDailyReport);
 
-// Function to load Dynamic Daily Report Form
 function loadDailyReportForm() {
   const container = document.getElementById("reportsContainer");
   container.innerHTML = `
@@ -122,15 +115,12 @@ function loadDailyReportForm() {
   
       </div>
     `;
-  // Attach event listener for the daily form submission
   document
     .getElementById("dailyForm")
     .addEventListener("submit", getDailyReport);
 }
 
-// Change buttons CSS
 document.getElementById("btnDaily").addEventListener("click", function () {
-  // Update button styles if needed
   document
     .getElementById("btnDaily")
     .classList.replace("btn-secondary", "btn-primary");
@@ -143,11 +133,8 @@ document.getElementById("btnDaily").addEventListener("click", function () {
   loadDailyReportForm();
 });
 
-/* ---- WEEKLY REPORT CODE---- */
 
-// Weekly Report function
 async function getWeeklyReport(e) {
-  // Get inputs, table body and table footers for weekly report
   const weekInput = document.getElementById("week");
   const tbodyWeekly = document.getElementById("tbodyWeeklyId");
   const tfootWeekly = document.getElementById("tfootWeeklyId");
@@ -169,7 +156,6 @@ async function getWeeklyReport(e) {
       { headers: { Authorization: token } }
     );
 
-    // Save the data and report type globally for CSV download
     currentReportData = response.data;
     currentReportType = "weekly";
 
@@ -208,7 +194,6 @@ async function getWeeklyReport(e) {
   }
 }
 
-// Function to load Dynamic Weekly Report Form
 function loadWeeklyReportForm() {
   const container = document.getElementById("reportsContainer");
   container.innerHTML = `
@@ -257,13 +242,11 @@ function loadWeeklyReportForm() {
         </div>
     </div>
   `;
-  // Attach event listener for the weekly form submission
   document
     .getElementById("weeklyForm")
     .addEventListener("submit", getWeeklyReport);
 }
 
-// Change buttons CSS
 document.getElementById("btnWeekly").addEventListener("click", function () {
   document
     .getElementById("btnWeekly")
@@ -277,11 +260,8 @@ document.getElementById("btnWeekly").addEventListener("click", function () {
   loadWeeklyReportForm();
 });
 
-/* ---- MONTHLY REPORT CODE---- */
 
-// Monthly Report function
 async function getMonthlyReport(e) {
-  // Get inputs, table body and table footers for monthly report
   const monthInput = document.getElementById("month");
   const tbodyMonthly = document.getElementById("tbodyMonthlyId");
   const tfootMonthly = document.getElementById("tfootMonthlyId");
@@ -303,7 +283,6 @@ async function getMonthlyReport(e) {
       { headers: { Authorization: token } }
     );
 
-    // Save the data and report type globally for CSV download
     currentReportData = response.data;
     currentReportType = "monthly";
 
@@ -342,7 +321,6 @@ async function getMonthlyReport(e) {
   }
 }
 
-// Function to load Dynamic Monthly Report Form
 function loadMonthlyReportForm() {
   const container = document.getElementById("reportsContainer");
   container.innerHTML = `
@@ -391,13 +369,11 @@ function loadMonthlyReportForm() {
         </div>
     </div>
   `;
-  // Attach event listener for the monthly form submission
   document
     .getElementById("monthlyForm")
     .addEventListener("submit", getMonthlyReport);
 }
 
-// Change buttons CSS
 document.getElementById("btnMonthly").addEventListener("click", function () {
   document
     .getElementById("btnMonthly")
@@ -412,9 +388,7 @@ document.getElementById("btnMonthly").addEventListener("click", function () {
 });
 
 
-/* --------- Download Report Functionality --------- */
 
-// Helper: Trigger a download of a CSV file
 function downloadCSV(csvContent, filename) {
   const csvFile = new Blob([csvContent], { type: "text/csv" });
   const downloadLink = document.createElement("a");
@@ -426,22 +400,17 @@ function downloadCSV(csvContent, filename) {
   document.body.removeChild(downloadLink);
 }
 
-// Helper: Convert JSON data to CSV format and trigger download
 function exportDataToCSV(data, filename) {
-  // Convert JSON data to CSV format
   let csv = "";
   if (data.length > 0) {
 
-    // The keys to exclude in csv file
     const excludedKeys = ["id", "createdAt", "updatedAt", "userId"];
-    // Filter the headers to remove the unwanted keys
     const headers = Object.keys(data[0]).filter(
       (key) => !excludedKeys.includes(key)
     );
 
     csv += headers.join(",") + "\n";
 
-    // Append rows using only the filtered headers
     data.forEach((row) => {
       const values = headers.map((header) => `"${row[header]}"`);
       csv += values.join(",") + "\n";
@@ -450,7 +419,6 @@ function exportDataToCSV(data, filename) {
   downloadCSV(csv, filename);
 }
 
-// Attach download functionality to the download button
 const downloadBtn = document.querySelector(".btn-download");
 downloadBtn.addEventListener("click", function (e) {
   e.preventDefault();

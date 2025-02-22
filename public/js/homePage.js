@@ -3,7 +3,7 @@ const categoryInput = document.querySelector("#categoryInput");
 const categoryBtn = document.querySelector("#categoryBtn");
 const form = document.getElementById("form1");
 const addExpenseBtn = document.getElementById("submitBtn");
-const table = document.getElementById("tbodyId");
+const tableBody = document.getElementById("tbodyId");
 const buyPremiumBtn = document.getElementById("buyPremiumBtn");
 const reportsLink = document.getElementById("reportsLink");
 const leaderboardLink = document.getElementById("leaderboardLink");
@@ -68,15 +68,17 @@ async function addExpense() {
   }
 }
 
-async function getAllExpenses() {
-  // e.preventDefault();
+async function getAllExpensesForPage(pageNo) {
   try {
     const token = localStorage.getItem("token");
-    const allExpenses = await axios.get(
-      "http://localhost:3000/expense/getAllExpenses",
+    const response = await axios.get(
+      `http://localhost:3000/expense/getAllExpensesForPage/${pageNo}`,
       { headers: { Authorization: token } }
     );
-    allExpenses.data.forEach((expenses) => {
+
+    tableBody.innerHTML = "";
+
+    response.data.expenses.forEach((expenses) => {
       const id = expenses.id;
       const date = expenses.date;
       const categoryValue = expenses.category;
@@ -86,7 +88,7 @@ async function getAllExpenses() {
       let tr = document.createElement("tr");
       tr.className = "trStyle";
 
-      table.appendChild(tr);
+      tableBody.appendChild(tr);
 
       let idValue = document.createElement("th");
       idValue.setAttribute("scope", "row");
@@ -126,8 +128,34 @@ async function getAllExpenses() {
       tr.appendChild(td3);
       tr.appendChild(td4);
     });
+
+    // agr pagination pahle se exist nhi krta to pagination add krdo
+    // aur agr pahle se exist krta h to kuch mat kro
+    // hum agr pageNo == 1 condition daalte h to wo galat hoga
+    // kyunki hum 1st page pe to kaafi baar jaa skte h
+    // aur fir jitni baar jaayenge utne baar pagination add hota rhega joki hum nhi chahte
+    if (!document.getElementById("paginationUL")) {
+      const paginationNav = document.getElementById("paginationNav");
+
+      const ul = document.createElement("ul");
+      ul.id = "paginationUL";
+      ul.className = "pagination justify-content-md-end";
+
+      for (let i = 1; i <= response.data.totalPages; i++) {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        li.setAttribute("class", "page-item");
+        a.setAttribute("class", "page-link");
+        a.setAttribute("href", "#");
+        a.appendChild(document.createTextNode(i));
+        li.appendChild(a);
+        ul.appendChild(li);
+        paginationNav.appendChild(ul);
+        a.addEventListener("click", () => getAllExpensesForPage(i)); // don't use var in for loop if you want to use different values of i each time you call getAllExpensesForPage
+      }
+    }
   } catch (err) {
-    console.error("GetAllExpenses went wrong:", err);
+    console.error("getAllExpensesForPage went wrong:", err);
   }
 }
 
@@ -276,12 +304,12 @@ buyPremiumBtn.addEventListener("click", buyPremium);
 addExpenseBtn.addEventListener("click", addExpense);
 
 document.addEventListener("DOMContentLoaded", isPremiumUser);
-document.addEventListener("DOMContentLoaded", getAllExpenses);
+document.addEventListener("DOMContentLoaded", () => getAllExpensesForPage(1));
 
-table.addEventListener("click", (e) => {
+tableBody.addEventListener("click", (e) => {
   deleteExpense(e);
 });
 
-table.addEventListener("click", (e) => {
+tableBody.addEventListener("click", (e) => {
   editExpense(e);
 });

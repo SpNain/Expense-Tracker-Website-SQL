@@ -2,7 +2,6 @@ const path = require("path");
 const Expense = require("../models/expenseModel");
 const { Op } = require("sequelize");
 
-// send reports.html file
 exports.getReportsPage = (req, res, next) => {
   try {
     res.sendFile(
@@ -14,7 +13,6 @@ exports.getReportsPage = (req, res, next) => {
   }
 };
 
-// send specific date's expenses data
 exports.dailyReports = async (req, res, next) => {
   try {
     const date = req.body.date;
@@ -28,7 +26,6 @@ exports.dailyReports = async (req, res, next) => {
   }
 };
 
-// get start and end date of provided week
 function getWeekRange(weekString) {
   const [year, week] = weekString.split("-W");
 
@@ -47,7 +44,6 @@ function getDateOfISOWeek(year, week, day) {
   return new Date(ISOWeekStart);
 }
 
-// send specific week's expenses data
 exports.weeklyReports = async (req, res, next) => {
   try {
     const week = req.body.week;
@@ -69,7 +65,6 @@ exports.weeklyReports = async (req, res, next) => {
   }
 };
 
-// send specific month's expenses data
 exports.monthlyReports = async (req, res, next) => {
   try {
     const month = req.body.month;

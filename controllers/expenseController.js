@@ -1,7 +1,9 @@
 const path = require("path");
+
 const Expense = require("../models/expenseModel");
 const User = require("../models/userModel");
 const sequelize = require("../util/database");
+const AwsService = require("../services/awsService");
 
 exports.getHomePage = async (req, res, next) => {
   try {
@@ -152,5 +154,40 @@ exports.editExpense = async (req, res, next) => {
     await t.rollback();
     console.error(err);
     res.status(500).json({ error: err });
+  }
+};
+
+exports.downloadAllExpenses = async (req, res, next) => {
+  try {
+
+    // const expenses = await Expense.findAll({ where: { userId: req.user.id } }); OR req.user.getExpenses();
+    const expenses = await req.user.getExpenses({
+      attributes: ["date", "category", "description", "amount"],
+    });
+
+    const filename = `AllExpenses/${
+      req.user.name
+    }_Expenses_${new Date().toISOString()}.csv`;
+
+    // converting the expenses data to csv
+    let csv = "";
+
+    if (expenses.length > 0) {
+      
+      const headers = Object.keys(expenses[0].dataValues);
+      csv += headers.join(",") + "\n";
+
+      expenses.forEach((row) => {
+        const values = headers.map((header) => `"${row.dataValues[header]}"`);
+        csv += values.join(",") + "\n";
+      });
+    }
+
+    const downloadURL = await AwsService.uploadToS3(csv, filename);
+    res.status(200).json({downloadURL, success:true});
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err , success:false});
   }
 };

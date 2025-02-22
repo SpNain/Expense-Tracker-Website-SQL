@@ -17,12 +17,3 @@ async function updatePassword() {
   }
 }
 resetPasswordBtn.addEventListener("click", updatePassword);
-
-/*
-FLOW OF CODE
-Humne sendMail code ko update kra ki email ka sturcture kaisa hoga
-fir humne resetPassword model add kr diya taaki hum ye check kr ske ki jo link email me bheja gya h wo abhi bhi active h ya nhi
-fir humne resetPassword and user ke bich me many to one ka relationship add kra
-fir humne email me bheje jaane wale link ke liye frontend code add kra aur us frontend bhejne ke liye routes aur controller me backend add kra
-aur fir passwords ko update krne ke liye controller me code add kra
-*/

@@ -138,18 +138,14 @@ async function getAllExpensesForPage(pageNo) {
 }
 
 function addPaginationNav(currentPage, totalPages) {
-  // agr pahle se pagination ul hoga to usko hta denge
   document.getElementById("paginationUL")?.remove();
 
-  // get Pagination Navbar
   const paginationNav = document.getElementById("paginationNav");
 
-  // Create ul
   const ul = document.createElement("ul");
   ul.id = "paginationUL";
   ul.className = "pagination";
 
-  // Previous Button
   const prevLi = document.createElement("li");
   const prevA = document.createElement("a");
   prevLi.setAttribute("class", "page-item");
@@ -165,7 +161,6 @@ function addPaginationNav(currentPage, totalPages) {
     if (currentPage > 1) getAllExpensesForPage(currentPage - 1);
   });
 
-  // Page Buttons
   for (let i = 1; i <= totalPages; i++) {
     const li = document.createElement("li");
     const a = document.createElement("a");
@@ -179,7 +174,6 @@ function addPaginationNav(currentPage, totalPages) {
     a.addEventListener("click", () => getAllExpensesForPage(i));
   }
 
-  // Next Button
   const nextLi = document.createElement("li");
   const nextA = document.createElement("a");
   nextLi.setAttribute("class", "page-item");
@@ -195,7 +189,6 @@ function addPaginationNav(currentPage, totalPages) {
     if (currentPage < totalPages) getAllExpensesForPage(currentPage + 1);
   });
 
-  // Append ul
   paginationNav.appendChild(ul);
 }
 
@@ -345,7 +338,7 @@ addExpenseBtn.addEventListener("click", addExpense);
 
 document.addEventListener("DOMContentLoaded", isPremiumUser);
 document.addEventListener("DOMContentLoaded", () => getAllExpensesForPage(1));
-rowsPerPageSelect.addEventListener("change", () => getAllExpensesForPage(1)); // Reload from the first page when changing rows per page
+rowsPerPageSelect.addEventListener("change", () => getAllExpensesForPage(1));
 
 tableBody.addEventListener("click", (e) => {
   deleteExpense(e);

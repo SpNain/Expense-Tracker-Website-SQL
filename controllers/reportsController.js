@@ -3,7 +3,6 @@ const Expense = require("../models/expenseModel");
 const { Op } = require("sequelize");
 const AwsService = require("../services/awsService");
 
-// Global variables to store expense data and type for daily, weekly and monthly
 let currentReportData = [];
 let currentReportType = "";
 
@@ -65,7 +64,6 @@ exports.weeklyReports = async (req, res, next) => {
         },
         userId: req.user.id,
       }
-      // raw: true,  htna pda kyunki download report me ek jaisa data ka structure chahiye daily, weekly aur monhly sbke liye
     });
 
     currentReportData = expenses;
@@ -102,11 +100,10 @@ exports.monthlyReports = async (req, res, next) => {
 
 exports.downloadReport = async (req, res, next) => {
   try {
-    const filename = `${currentReportType} Report/${
+    const filename = `${currentReportType}Report/${
       req.user.name
     }_Expenses_${new Date().toISOString()}.csv`;
 
-    // convert the expenses data to csv
     let csv = "";
 
     if (currentReportData.length > 0) {
@@ -122,12 +119,16 @@ exports.downloadReport = async (req, res, next) => {
       });
     }
 
-    // reset the global variables - taaki jb tk dobara koi data fetch na kra jaaye tab tk inme koi value na aaye ek baar download krne ke baad
     if(currentReportData.length === 0) return res.status(200).json({downloadURL: "", message:"To download again, re-fetch the data.", success: false});
     currentReportData = [];
     currentReportType = "";
 
     const downloadURL = await AwsService.uploadToS3(csv, filename);
+
+    await req.user.createDownload({
+      downloadLink: downloadURL
+    });
+
     res.status(200).json({downloadURL, success:true});
   } catch (err) {
     console.error(err);

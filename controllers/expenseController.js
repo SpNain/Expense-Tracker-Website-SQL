@@ -160,7 +160,6 @@ exports.editExpense = async (req, res, next) => {
 exports.downloadAllExpenses = async (req, res, next) => {
   try {
 
-    // const expenses = await Expense.findAll({ where: { userId: req.user.id } }); OR req.user.getExpenses();
     const expenses = await req.user.getExpenses({
       attributes: ["date", "category", "description", "amount"],
     });
@@ -169,7 +168,6 @@ exports.downloadAllExpenses = async (req, res, next) => {
       req.user.name
     }_Expenses_${new Date().toISOString()}.csv`;
 
-    // converting the expenses data to csv
     let csv = "";
 
     if (expenses.length > 0) {
@@ -184,6 +182,11 @@ exports.downloadAllExpenses = async (req, res, next) => {
     }
 
     const downloadURL = await AwsService.uploadToS3(csv, filename);
+
+    await req.user.createDownload({
+      downloadLink: downloadURL
+    });
+
     res.status(200).json({downloadURL, success:true});
 
   } catch (err) {

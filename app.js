@@ -13,11 +13,13 @@ const purchaseMembershipRouter = require("./router/purchaseMembershipRouter");
 const leaderboardRouter = require("./router/leaderboardRouter");
 const passwordRouter = require("./router/passwordRouter");
 const reportsRouter = require("./router/reportsRouter");
+const downloadRouter = require("./router/downloadRouter");
 
 const User = require("./models/userModel");
 const Expense = require("./models/expenseModel");
 const Order = require("./models/ordersModel");
 const ResetPassword = require("./models/resetPasswordModel");
+const Download = require("./models/downloadModel");
 
 const app = express();
 
@@ -41,20 +43,25 @@ app.use("/password", passwordRouter);
 
 app.use("/reports", reportsRouter);
 
+app.use("/download", downloadRouter);
+
 User.hasMany(Expense);
 Expense.belongsTo(User);
 
 User.hasMany(Order);
 Order.belongsTo(User);
 
-ResetPassword.belongsTo(User);
 User.hasMany(ResetPassword);
+ResetPassword.belongsTo(User);
+
+User.hasMany(Download);
+Download.belongsTo(User);
 
 async function initiate() {
   try {
     // await sequelize.sync({ force: true })
     await sequelize.sync();
-    app.listen(3000, () => {
+    app.listen(process.env.PORT || 3000, () => {
       console.log("Server started on port 3000");
     });
   } catch (err) {

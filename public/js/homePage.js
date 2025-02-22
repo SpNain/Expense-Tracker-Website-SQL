@@ -326,12 +326,14 @@ async function isPremiumUser() {
   if (res.data.isPremiumUser) {
     buyPremiumBtn.innerHTML = "Premium Member &#128081";
     buyPremiumBtn.removeEventListener("click", buyPremium);
-    reportsLink.removeAttribute("onclick");
+
     leaderboardLink.removeAttribute("onclick");
+    reportsLink.removeAttribute("onclick");
+    downloadsLink.removeAttribute("onclick");
     leaderboardLink.setAttribute("href", "/premium/getLeaderboardPage");
     reportsLink.setAttribute("href", "/reports/getReportsPage");
+    downloadsLink.setAttribute("href", "/download/getDownloadsPage");
 
-    // append download button
     const divEle = document.createElement("div");
 
     divEle.setAttribute("data-bs-toggle", "tooltip");

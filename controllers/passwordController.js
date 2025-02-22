@@ -41,10 +41,9 @@ exports.sendMail = async (req, res, next) => {
     await ResetPassword.create({
       id: requestId,
       isActive: true,
-      userId: recepientEmail.dataValues.id, // user.id
+      userId: recepientEmail.dataValues.id,
     });
 
-    // Send email using the extracted function
     await sendResetPasswordEmail(email, requestId);
 
     return res.status(200).json({
@@ -77,10 +76,8 @@ exports.updatePassword = async (req, res, next) => {
       return res.status(409).json({ message: "Reset link expired or already used" });
     }
 
-    // Deactivate the reset link
     await resetRequest.update({ isActive: false });
 
-    // Hash new password and update user record
     const newPassword = await hashPassword(req.body.password);
     await User.update({ password: newPassword }, { where: { id: resetRequest.userId } });
 

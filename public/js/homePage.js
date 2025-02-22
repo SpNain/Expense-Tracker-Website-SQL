@@ -40,22 +40,23 @@ async function addExpense() {
     const month = currentDate.getMonth() + 1;
     const year = currentDate.getFullYear();
 
-    // add leading zeros to day and month if needed
     const formattedDay = day < 10 ? `0${day}` : day;
     const formattedMonth = month < 10 ? `0${month}` : month;
 
-    // create the date string in date-month-year format
     const dateStr = `${formattedDay}-${formattedMonth}-${year}`;
 
-    // console.log(dateStr); // outputs something like "23-02-2023"
-
+    const token = localStorage.getItem("token");
     const res = await axios
-      .post("http://localhost:3000/expense/addExpense", {
-        date: dateStr,
-        category: categoryValue,
-        description: descriptionValue,
-        amount: parseInt(amountValue),
-      })
+      .post(
+        "http://localhost:3000/expense/addExpense",
+        {
+          date: dateStr,
+          category: categoryValue,
+          description: descriptionValue,
+          amount: parseInt(amountValue),
+        },
+        { headers: { Authorization: token } }
+      )
       .then((res) => {
         if (res.status == 200) {
           window.location.reload();
@@ -72,8 +73,11 @@ async function addExpense() {
 async function getAllExpenses() {
   // e.preventDefault();
   try {
-    const res = await axios.get("http://localhost:3000/expense/getAllExpenses");
-    console.log(res.data);
+    const token = localStorage.getItem("token");
+    const res = await axios.get(
+      "http://localhost:3000/expense/getAllExpenses",
+      { headers: { Authorization: token } }
+    );
     res.data.forEach((expenses) => {
       const id = expenses.id;
       const date = expenses.date;
@@ -133,11 +137,13 @@ async function getAllExpenses() {
 
 async function deleteExpense(e) {
   try {
+    const token = localStorage.getItem("token");
     if (e.target.classList.contains("delete")) {
       let tr = e.target.parentElement.parentElement;
       let id = tr.children[0].textContent;
       const res = await axios.get(
-        `http://localhost:3000/expense/deleteExpense/${id}`
+        `http://localhost:3000/expense/deleteExpense/${id}`,
+        { headers: { Authorization: token } }
       );
       window.location.reload();
     }
@@ -148,6 +154,7 @@ async function deleteExpense(e) {
 
 async function editExpense(e) {
   try {
+    const token = localStorage.getItem("token");
     const categoryValue = document.getElementById("categoryBtn");
     const descriptionValue = document.getElementById("descriptionValue");
     const amountValue = document.getElementById("amountValue");
@@ -155,19 +162,18 @@ async function editExpense(e) {
     if (e.target.classList.contains("edit")) {
       let tr = e.target.parentElement.parentElement;
       let id = tr.children[0].textContent;
-      //Fill the input values with the existing values
+
       const res = await axios.get(
-        "http://localhost:3000/expense/getAllExpenses"
+        "http://localhost:3000/expense/getAllExpenses",
+        { headers: { Authorization: token } }
       );
       res.data.forEach((expense) => {
         if (expense.id == id) {
-          console.log("Yeh id aayi hai res main: " + expense.id);
           categoryValue.textContent = expense.category;
           descriptionValue.value = expense.description;
           amountValue.value = expense.amount;
           addExpenseBtn.textContent = "Update";
 
-          // const form = document.getElementById("form1");
           addExpenseBtn.removeEventListener("click", addExpense);
 
           addExpenseBtn.addEventListener("click", async function update(e) {
@@ -179,7 +185,8 @@ async function editExpense(e) {
                 category: categoryValue.textContent.trim(),
                 description: descriptionValue.value,
                 amount: amountValue.value,
-              }
+              },
+              { headers: { Authorization: token } }
             );
             window.location.reload();
           });

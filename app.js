@@ -7,6 +7,9 @@ const sequelize = require("./util/database");
 const userRouter = require("./router/userRouter");
 const expenseRouter = require("./router/expenseRouter");
 
+const User = require("./models/userModel");
+const Expense = require("./models/expenseModel");
+
 const app = express();
 
 app.use(express.static("public"));
@@ -19,6 +22,9 @@ app.use("/user", userRouter);
 
 app.use("/homePage", expenseRouter);
 app.use("/expense", expenseRouter);
+
+User.hasMany(Expense);
+Expense.belongsTo(User);
 
 async function initiate(){
     try {

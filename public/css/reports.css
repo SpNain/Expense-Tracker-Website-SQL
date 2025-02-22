@@ -25,7 +25,7 @@ body {
   box-shadow: 4px 4px 9px #293241;
   margin: 20px 193px;
 }
-#table {
+.reportTable {
   border-radius: 10px;
   background-color: #d2eaf7;
   /* background-image: linear-gradient(to bottom right, #c7e9fd, #3d5a80); */
@@ -123,4 +123,17 @@ body {
 }
 .btn-download:hover {
   background-color: #218838;
+}
+
+/* 
+Additional styles for visited, active, and focus states 
+because if i don't write explicitly css for these states 
+browser css of these states will override my above css of btn-download
+*/
+.btn-download:visited,
+.btn-download:active,
+.btn-download:focus {
+  background-color: #28a745;
+  color: white;
+  text-decoration: none; /* Prevents any default underline */
 }

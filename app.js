@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const sequelize = require("./util/database");
 
 const userRouter = require("./router/userRouter");
+const expenseRouter = require("./router/expenseRouter");
 
 const app = express();
 
@@ -15,6 +16,9 @@ app.use(bodyParser.json());
 
 app.use("/", userRouter);
 app.use("/user", userRouter);
+
+app.use("/homePage", expenseRouter);
+app.use("/expense", expenseRouter);
 
 async function initiate(){
     try {

@@ -5,10 +5,15 @@ const jwt = require("jsonwebtoken");
 
 function generateAccessToken(id, email) {
   return jwt.sign(
-    { userId: id, email: email },
-    "kjhsgdfiuiew889kbasgdfskjabsdfjlabsbdljhsd"
+    { userId: id, email: email }, process.env.TOKEN_SECRET_KEY
   );
 }
+
+exports.isPremiumUser = (req, res, next) => {
+  if (req.user.isPremiumUser) {
+    return res.json({ isPremiumUser: true });
+  }
+};
 
 exports.getLoginPage = (req, res, next) => {
   res.sendFile(path.join(__dirname, "../", "public", "views", "login.html"));
@@ -78,3 +83,5 @@ exports.postUserLogin = (req, res, next) => {
     }
   });
 };
+
+exports.generateAccessToken = generateAccessToken; 

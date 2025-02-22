@@ -1,112 +1,105 @@
-html,
-body {
-  height: 100%;
-  width: 100%;
-  background-color: #effeff;
+:root {
+  --primary-color: #52616b;
+  --secondary-color: #849ba5;
+  --hover-color: #343d43;
+  --tr-hover-color: rgb(217, 253, 253);
+  --table-color: #eef7fc;
 }
-/* 293241 dark
-  3d5a80 blue
-  98c1d9 light
-*/
+
+#form1 {
+  border-radius: 10px;
+  background-color: #f8f9fa;
+  box-shadow: 2px 2px 9px rgba(0, 0, 0, 0.5), -2px -2px 9px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  max-width: 1000px;
+}
+
+#categoryBtn {
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 20px;
+}
+
+.input-group{
+  width:auto;
+}
+
+.input-group-text {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+#submitBtn {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+#categoryBtn:hover, #submitBtn:hover {
+  background-color: var(--hover-color);
+  border: 1px solid var(--hover-color);
+}
+
+#containerDiv {
+  border-radius: 10px;
+  background-color: var(--table-color);
+  box-shadow: 0px 5px 9px rgba(0, 0, 0, 0.5);
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 1200px;
+}
+
+#tableHead {
+  background-color: var(--secondary-color);
+  color: white;
+  width: 100%;
+}
+
+.trStyle {
+  background-color: transparent;
+  /* width: 100%; */
+}
+
+.trStyle:hover {
+  background-color: var(--tr-hover-color);
+
+}
+
+button {
+  border-radius: 5px;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 .editDelete {
   float: right;
   margin: 3px;
   padding: 3px 10px;
 }
-#png {
-  margin-right: 10px;
-}
-#form1 {
-  border-radius: 10px;
-  background-color: #3d5a80;
-  box-shadow: 4px 4px 9px #293241;
-  margin: 20px 193px;
-}
-#containerDiv {
-  border-radius: 10px;
-  background-color: #d2eaf7;
-  /* background-image: linear-gradient(to bottom right, #c7e9fd, #3d5a80); */
-  box-shadow: 4px 4px 9px #b8b8b8;
-}
-#submitBtn {
-  width: 140px;
-  background-color: #293241;
-  border-color: #293241;
-  color: white;
-}
-.topBtn {
-  background-color: white;
-  border-color: white;
-  color: #293241;
-}
-#navigation {
-  background-color: #233b64;
-}
-#categoryBtn {
-  background-color: #293241;
-  width: auto;
-  border-radius: 7px;
-  border: none;
-  color: white;
-}
-#category {
-  width: 300px;
-}
-.input-group-text {
-  background-color: #293241;
-  color: white;
-  border: none;
-}
-#description {
-  width: 2000px;
-}
 
-.trStyle {
-  background-color: transparent;
-}
-#categoryBtn:hover,
-#submitBtn:hover,
-.editDelete:hover {
-  background-color: #ffffff;
-  color: #293241;
-  border-color: #293241;
-}
-.topBtn:hover {
-  background-color: #3d5a80;
-  color: white;
-  border-color: #3d5a80;
-}
-.editDelete {
-  background-color: #293241;
-  border: none;
-}
-
-#tableHead {
-  background-color: #3d5a80;
-  color: white;
+.pagination {
+  margin: 0px;
 }
 
 .page-link {
-  background-color: #3d5a80;
+  background-color: var(--secondary-color);
   color: white;
 }
 
 .page-link:hover {
-  background-color: #a2c9de;
-  color: #233b64;
+  background-color: var(--hover-color);
+  color: white;
 }
 
-.pagination{
-  margin: 0px;
+.activePage {
+  background-color: var(--primary-color);
+  color: white;
 }
 
-.activePage{
-  background-color: #29346e;
-}
-
-.disabledPage{
+.disabledPage {
   pointer-events: none;
-  background-color: #3d5a8078;
+  background-color: rgba(85, 85, 85, 0.3);
 }
 
 .btn-download {
@@ -125,6 +118,7 @@ body {
   z-index: 1;
   transition: background-color 0.3s ease;
 }
+
 .btn-download:hover {
   background-color: #218838;
 }

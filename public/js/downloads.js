@@ -45,6 +45,7 @@ function extractInfo(str) {
 }
 
 async function getAllDownloads() {
+  try{
   const token = localStorage.getItem("token");
   const response = await axios.get(
     "http://localhost:3000/download/getAllDownloads",
@@ -87,6 +88,9 @@ async function getAllDownloads() {
     tr.appendChild(td2);
     tr.appendChild(td3);
   });
+} catch (error) {
+  console.error("Error getting all the downloads:", error);
+}
 }
 
 document.addEventListener("DOMContentLoaded", getAllDownloads);

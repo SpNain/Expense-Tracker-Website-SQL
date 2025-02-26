@@ -3,11 +3,9 @@ const wrapper = document.querySelector(".wrapper"),
   loginHeader = document.querySelector(".login header"),
   signUpAnker = document.querySelector("#signUpAnker");
 
-// wrapper pe agr active class lgi h to login show hoga aur active nahi lga h to signup show hoga
 loginHeader.addEventListener("click", () => {
   wrapper.classList.add("active");
 
-  // login active hote hi sign up input khaali krdo
   document.getElementById("name").value = "";
   document.getElementById("email").value = "";
   document.getElementById("password").value ="";
@@ -16,7 +14,6 @@ loginHeader.addEventListener("click", () => {
 signupHeader.addEventListener("click", () => {
   wrapper.classList.remove("active");
 
-  // signup active hote hi login input khaali krdo
   document.getElementById("loginEmail").value = "";
   document.getElementById("loginPassword").value = "";
 });
@@ -24,7 +21,6 @@ signupHeader.addEventListener("click", () => {
 signUpAnker.addEventListener("click", () => {
   wrapper.classList.remove("active");
 
-  // signup active hote hi login input khaali krdo
   document.getElementById("loginEmail").value = "";
   document.getElementById("loginPassword").value = "";
 });
